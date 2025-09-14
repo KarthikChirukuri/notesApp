@@ -7,11 +7,67 @@
   </head>
   <body>
     <div class="Loginbox">
-        <form action="/login" method="POST">
-            <input type="text" placeholder="Enter UserName" name="username"><br><br>
-            <input type="password" placeholder="Enter PassWord" name="password"><br><br>
-            <button>submit</button>
-        </form>
+      <form action="/login" method="POST">
+        <input
+          type="email"
+          placeholder="Enter Email"
+          name="email"
+        /><br /><br />
+        <input
+          type="password"
+          placeholder="Enter PassWord"
+          name="password"
+        /><br /><br />
+        <button>submit</button>
+      </form>
     </div>
+    <!-- <script>
+      const loginForm = document.querySelector("form");
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
+
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const text = await res.text();
+
+        if (!res.ok) {
+          alert(text);
+          return;
+        }
+
+        const token = text.split("Token: ")[1];
+        localStorage.setItem("token", token);
+
+        alert("Login successful! Token saved.");
+        fetchNotes();
+      });
+
+      async function fetchNotes() {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("/notes", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          alert("Unauthorized: " + (await res.text()));
+          return;
+        }
+
+        const html = await res.text();
+        document.body.innerHTML = html;
+      }
+    </script> -->
   </body>
 </html>
