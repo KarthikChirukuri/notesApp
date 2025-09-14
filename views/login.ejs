@@ -4,6 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loogin Page</title>
+    <style>
+      body {
+        background-color: #0e1942; /* nebula blue */
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .Loginbox {
+        text-align: center;
+      }
+
+      input,
+      button {
+        padding: 8px;
+        margin: 5px 0;
+        border: none;
+        border-radius: 4px;
+      }
+
+      input {
+        width: 200px;
+      }
+
+      button {
+        background-color: #4a00e0;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="Loginbox">
@@ -21,53 +55,5 @@
         <button>submit</button>
       </form>
     </div>
-    <!-- <script>
-      const loginForm = document.querySelector("form");
-
-      loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const email = loginForm.email.value;
-        const password = loginForm.password.value;
-
-        const res = await fetch("/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const text = await res.text();
-
-        if (!res.ok) {
-          alert(text);
-          return;
-        }
-
-        const token = text.split("Token: ")[1];
-        localStorage.setItem("token", token);
-
-        alert("Login successful! Token saved.");
-        fetchNotes();
-      });
-
-      async function fetchNotes() {
-        const token = localStorage.getItem("token");
-
-        const res = await fetch("/notes", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          alert("Unauthorized: " + (await res.text()));
-          return;
-        }
-
-        const html = await res.text();
-        document.body.innerHTML = html;
-      }
-    </script> -->
   </body>
 </html>

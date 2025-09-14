@@ -101,11 +101,19 @@ app.get("/notes", authenticate, async (req, res) => {
 });
 
 app.get("/notes/new", authenticate, async (req, res) => {
+  const tenant = await Tenant.findById(req.user.tenant);
+  if (tenant.plan === "free") {
+    const noteCount = await Note.countDocuments({ tenant: tenant._id });
+    if (noteCount >= 5) {
+      return res.status(403).send("Free plan limit reached. Upgrade to Pro!");
+    }
+  }
   res.render("newNotes.ejs");
 });
 
 app.post("/notes/new", authenticate, async (req, res) => {
   const text = req.body.newNotes;
+
   await new Note({ text, tenant: req.user.tenant, author: req.user.id }).save();
   res.redirect("/notes");
 });
@@ -161,6 +169,33 @@ app.post("/logout", (req, res) => {
   });
   res.clearCookie("connect.sid");
   res.redirect("/login");
+});
+
+app.get("/health", async (req, res) => {
+  try {
+    const dbstate = mongoose.connection.readyState;
+    res.json({
+      status: "ok",
+      database: dbstate === 1 ? "connected" : "disconnected",
+      uptime: process.uptime(),
+      timestamp: new Date(),
+    });
+  } catch (err) {
+    res.status(500).json({ status: "error" });
+  }
+});
+
+// Show subscription page
+app.get("/subscription", authenticate, authorizeAdmin, (req, res) => {
+  res.render("subscription.ejs");
+});
+
+// Handle subscription update
+app.post("/subscription", authenticate, authorizeAdmin, async (req, res) => {
+  const { plan } = req.body;
+
+  await Tenant.findByIdAndUpdate(req.user.tenant, { plan });
+  res.send("Subscription updated successfully to " + plan);
 });
 
 app.listen(port, () => {

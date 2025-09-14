@@ -4,13 +4,65 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notes</title>
+    <style>
+      body {
+        background-color: #1a2a6c; /* nebula blue */
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      a {
+        color: #add8e6; /* light blue for links */
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        margin: 10px 0;
+      }
+
+      button {
+        background-color: #4a00e0;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        opacity: 0.8;
+      }
+
+      .index{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 7rem;
+      }
+    </style>
   </head>
   <body>
-    <h1>Notes List</h1>
-    <a href="/notes/new">create new note</a>
+    <div>
+      <h1>Notes List</h1>
+    <a href="/notes/new"> create new note</a>
     <br /><br /><br />
-
-    <ul>
+    </div>
+    <div class="index">
+      <ul>
       <% notes.forEach((note, index) => { %>
       <li>
         Note <%= index + 1 %>: - <a href="/notes/<%= note.id %>">View</a> &nbsp;
@@ -29,5 +81,6 @@
         <button type="submit">Logout</button>
       </form>
     </ul>
+    </div>
   </body>
 </html>
