@@ -45,7 +45,7 @@
         cursor: pointer;
         margin-top: 15px;
       }
-      </style>
+    </style>
   </head>
   <body>
     <form action="/signup" method="POST">
@@ -60,6 +60,13 @@
         <option value="Acme">Acme</option>
         <option value="Globex">Globex</option></select
       ><br />
+
+      <label>Role:</label>
+      <select name="role" required>
+        <option value="Member">Member</option>
+        <option value="Admin">Admin</option>
+      </select>
+      <br />
 
       <button type="submit">Sign Up</button>
     </form>

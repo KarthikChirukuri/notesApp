@@ -9,6 +9,8 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 
+require("dotenv").config();
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -29,6 +31,8 @@ app.use(
   })
 );
 
+const dbUrl = process.env.ATLASDB_URL;
+
 main()
   .then(() => {
     console.log("MongoDB connection successful");
@@ -36,7 +40,7 @@ main()
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/notesApp");
+  await mongoose.connect(dbUrl);
 }
 
 const Note = require("./models/note");
@@ -61,6 +65,11 @@ function authorizeAdmin(req, res, next) {
   }
   next();
 }
+
+app.get("/", (req, res) => {
+  res.render("home.ejs");
+});
+
 
 app.get("/login", (req, res) => {
   res.render("login.ejs");
@@ -88,9 +97,9 @@ app.get("/signup", (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  let { email, password, tenant } = req.body;
+  let { email, password, tenant, role } = req.body;
   const tdoc = await Tenant.findOne({ name: tenant });
-  const user = new User({ email, password, tenant: tdoc._id });
+  const user = new User({ email, password, tenant: tdoc._id, role });
   await user.save();
   res.send(`User registered successfully ` + tdoc.name);
 });
